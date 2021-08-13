@@ -17,7 +17,7 @@ The original training logs can be found in './log/'. The training logs contain i
 If training logs are too large to be opened, the screenshots of the logs with timestamp are provided under './screenshots/' for you to view our experiments, the datasets, and the final experimental results.
 
 ### Training:
-When running the model for the first time, please make sure that the param 'get_2hop' is configured as Ture in './config.py'. This will generate 2-hop triples in the data preprocessing stage.
+When running the model for the first time, please make sure that the param 'get_2hop' is configured as True in './config.py'. This will generate 2-hop triples in the data preprocessing stage.
   
 After running the model once, please make sure that the param 'get_2hop' is configured as False and 'use_2hop' is configured as True in './config.py'.
 

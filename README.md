@@ -1,7 +1,7 @@
 # RPLP
-Relation Projection for Link Prediction:Bridging MessagePassing and Triplet Convolution
+Relation Projection for Link Prediction: Bridging Message Passing and Triplet Convolution
 
-This repository contains all the source code of the implementation for the paper: Relation Projection for Link Prediction:Bridging MessagePassing and Triplet Convolution
+This repository contains all the source code of the implementation for the paper: Relation Projection for Link Prediction: Bridging Message Passing and Triplet Convolution
 
 ### Requirements:
 python==3.8.5  

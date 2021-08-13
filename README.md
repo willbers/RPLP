@@ -8,10 +8,10 @@ python==3.8.5
 torch==1.8.0
 
 ### Data:
-Download our raw data from Google Drive using the link: https://drive.google.com/file/d/1HYx0wRQgN5MOCmfgY5O_bndiuNroCmuP/view?usp=sharing. Data provided here includes FB15k-237, WN18RR and kinship.
+Download our raw data from Google Drive using the link: https://drive.google.com/file/d/1HYx0wRQgN5MOCmfgY5O_bndiuNroCmuP/view?usp=sharing. Data provided here includes FB15k-237, WN18RR and Kinship.
 
 ### Logs
-The original training logs can be found in './log/'. The training logs contain information about model training with FB15k-237, WN18RR and kinship.
+The original training logs can be found in './log/'. The training logs contain information about model training with FB15k-237, WN18RR and Kinship.
 
 ### Screenshots
 If training logs are too large to be opened, the screenshots of the logs with timestamp are provided under './screenshots/' for you to view our experiments, the datasets, and the final experimental results.

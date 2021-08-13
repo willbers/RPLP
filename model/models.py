@@ -9,7 +9,7 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 
 from model.layers import SpGraphAttentionLayer, ConvKB
-from config import RPGAT_config as config
+from config import RPLP_config as config
 
 CUDA = torch.cuda.is_available()
 
@@ -66,7 +66,7 @@ class SpGAT(nn.Module):
         return out_entity, out_relation
 
 
-class RPGAT(nn.Module):
+class RPLP(nn.Module):
     def __init__(self, initial_entity_emb, initial_relation_emb):
         super().__init__()
 

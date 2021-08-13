@@ -10,7 +10,7 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s: %(message)s',
 
 from process.preprocess import init_embeddings, build_data
 from process.create_batch import Triples
-from config import RPGAT_config as config
+from config import RPLP_config as config
 
 
 def load_data():

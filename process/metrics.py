@@ -1,7 +1,7 @@
 import time
 import numpy as np
 import torch
-from config import RPGAT_config as config
+from config import RPLP_config as config
 import logging
 logging.basicConfig(format='%(asctime)s - %(levelname)s: %(message)s',
                     level=logging.INFO)

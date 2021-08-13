@@ -1,6 +1,6 @@
 from process.n_hop_data import load_data, load_nhop_data
 from train_eval import train_gat, train_conv, evaluate
-from config import RPGAT_config as config
+from config import RPLP_config as config
 
 def main():
     triples, entity_embeddings, relation_embeddings = load_data()

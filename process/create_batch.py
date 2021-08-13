@@ -8,7 +8,7 @@ import logging
 logging.basicConfig(format='%(asctime)s - %(levelname)s: %(message)s',
                     level=logging.INFO)
 import torch
-from config import RPGAT_config as config
+from config import RPLP_config as config
 
 class Triples:
     def __init__(self, train_data, validation_data, test_data, entity2id,

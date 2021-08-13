@@ -9,10 +9,10 @@ import logging
 logging.basicConfig(format='%(asctime)s - %(levelname)s: %(message)s',
                     level=logging.INFO)
 
-from model.models import RPGAT, ConvOnly, save_model
+from model.models import RPLP, ConvOnly, save_model
 from model.loss import batch_loss
 from process.metrics import validation
-from config import RPGAT_config as config
+from config import RPLP_config as config
 
 CUDA = torch.cuda.is_available()
 
@@ -22,12 +22,12 @@ def train_gat(triples, entity_embeddings, relation_embeddings, nhop_nodes):
     ####################################
 
     logging.info("Defining model")
-    model_RPGAT = RPGAT(entity_embeddings, relation_embeddings)
+    model_RPLP = RPLP(entity_embeddings, relation_embeddings)
 
     if CUDA:
-        model_RPGAT.cuda()
+        model_RPLP.cuda()
 
-    optimizer = torch.optim.Adam(model_RPGAT.parameters(), lr=config['lr'], weight_decay=config['weight_decay_gat'])
+    optimizer = torch.optim.Adam(model_RPLP.parameters(), lr=config['lr'], weight_decay=config['weight_decay_gat'])
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=500, gamma=0.5, last_epoch=-1)
     loss_func = nn.MarginRankingLoss(margin=config['margin'])
 
@@ -50,7 +50,7 @@ def train_gat(triples, entity_embeddings, relation_embeddings, nhop_nodes):
         logging.info("epoch: {}".format(epoch))
         random.shuffle(triples.train_triples)
         triples.train_indices = np.array(list(triples.train_triples)).astype(np.int32)
-        model_RPGAT.train()  # getting in training mode
+        model_RPLP.train()  # getting in training mode
         start_time = time.time()
         epoch_loss = []
 
@@ -68,17 +68,17 @@ def train_gat(triples, entity_embeddings, relation_embeddings, nhop_nodes):
                 train_indices = Variable(torch.LongTensor(train_indices))
 
             # forward
-            entity_embed_positive, relation_embed_positive, entity_relation_embed_positive = model_RPGAT(
+            entity_embed_positive, relation_embed_positive, entity_relation_embed_positive = model_RPLP(
                 triples, triples.train_adj_matrix, train_indices, train_indices_nhop=current_nhop_indices_positive, flag='positive')
 
-            model_RPGAT.final_entity_embeddings.data = entity_embed_positive.data
-            model_RPGAT.final_relation_embeddings.data = relation_embed_positive.data
+            model_RPLP.final_entity_embeddings.data = entity_embed_positive.data
+            model_RPLP.final_relation_embeddings.data = relation_embed_positive.data
 
-            entity_embed_negative, relation_embed_negative, entity_relation_embed_negative = model_RPGAT(
+            entity_embed_negative, relation_embed_negative, entity_relation_embed_negative = model_RPLP(
                 triples, triples.train_adj_matrix, train_indices, train_indices_nhop='', flag='negative')
 
-            model_RPGAT.final_entity_embeddings.data = entity_embed_negative.data
-            model_RPGAT.final_relation_embeddings.data = relation_embed_negative.data
+            model_RPLP.final_entity_embeddings.data = entity_embed_negative.data
+            model_RPLP.final_relation_embeddings.data = relation_embed_negative.data
 
             optimizer.zero_grad()
 
@@ -93,7 +93,7 @@ def train_gat(triples, entity_embeddings, relation_embeddings, nhop_nodes):
         logging.info("Epoch: {} , average loss {} , epoch_time: {}".format(
                 epoch, sum(epoch_loss) / len(epoch_loss), time.time() - start_time))
         if (epoch+1) % 10 == 0:
-            save_model(model_RPGAT, epoch, config['output_folder'])
+            save_model(model_RPLP, epoch, config['output_folder'])
 
         epoch_losses.append(sum(epoch_loss) / len(epoch_loss))
 
@@ -104,18 +104,18 @@ def train_conv(triples, entity_embeddings, relation_embeddings):
     ####################################
 
     logging.info("GAT Initialized")
-    model_RPGAT = RPGAT(entity_embeddings, relation_embeddings)
+    model_RPLP = RPLP(entity_embeddings, relation_embeddings)
     logging.info("Conv model for training")
     model_conv = ConvOnly(entity_embeddings, relation_embeddings)
 
     if CUDA:
-        model_RPGAT.cuda()
+        model_RPLP.cuda()
         model_conv.cuda()
 
-    model_RPGAT.load_state_dict(torch.load('{}/trained_{}.pth'.format(config['output_folder'], config['epochs_gat'] - 1)), strict=False)
-    model_conv.final_entity_embeddings = model_RPGAT.final_entity_embeddings
-    model_conv.final_relation_embeddings = model_RPGAT.final_relation_embeddings
-    model_conv.weight_matrices = model_RPGAT.total_trans_matrix_after_update
+    model_RPLP.load_state_dict(torch.load('{}/trained_{}.pth'.format(config['output_folder'], config['epochs_gat'] - 1)), strict=False)
+    model_conv.final_entity_embeddings = model_RPLP.final_entity_embeddings
+    model_conv.final_relation_embeddings = model_RPLP.final_relation_embeddings
+    model_conv.weight_matrices = model_RPLP.total_trans_matrix_after_update
 
     triples.batch_size = config['batch_size_conv']
     triples.invalid_valid_ratio = int(config['valid_invalid_ratio_conv'])

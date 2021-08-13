@@ -1,6 +1,6 @@
 import torch
 
-from config import RPGAT_config as config
+from config import RPLP_config as config
 
 def batch_loss(gat_loss_func, train_indices, relation_embed, entity_relation_embed):
     len_pos_triples = int(train_indices.shape[0] / (int(config['valid_invalid_ratio_gat']) + 1))

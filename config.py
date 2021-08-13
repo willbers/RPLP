@@ -1,6 +1,6 @@
-# params for our model RPGAT
+# params for model RPLP
 
-RPGAT_config = {
+RPLP_config = {
     "train_gat": True,
     "train_conv": True,
     "evaluate": True,
